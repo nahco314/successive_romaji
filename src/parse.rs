@@ -73,10 +73,13 @@ fn parse_hiragana(mut hiragana: &str) -> Option<Vec<(String, String)>> {
     return Some(res);
 }
 
-pub fn parse_hiragana_with_buf(
-    mut hiragana: &str,
-    mut romaji: &str,
-) -> Option<(Vec<(String, String)>, WritingChar, Vec<(String, String)>)> {
+#[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub enum ParseResult {
+    Writing(Vec<(String, String)>, WritingChar, Vec<(String, String)>),
+    Completed(Vec<(String, String)>),
+}
+
+pub fn parse_hiragana_with_buf(mut hiragana: &str, mut romaji: &str) -> Option<ParseResult> {
     let mut confirmed = vec![];
 
     while let Some(val) = try_read(hiragana, romaji) {
@@ -85,10 +88,14 @@ pub fn parse_hiragana_with_buf(
         confirmed.push(part);
     }
 
+    if hiragana.is_empty() {
+        return Some(ParseResult::Completed(confirmed));
+    }
+
     let writing;
     (hiragana, writing) = get_writing(hiragana, romaji)?;
 
     let tail = parse_hiragana(hiragana)?;
 
-    return Some((confirmed, writing, tail));
+    return Some(ParseResult::Writing(confirmed, writing, tail));
 }

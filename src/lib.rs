@@ -5,7 +5,7 @@ pub use parse::*;
 
 #[cfg(test)]
 mod tests {
-    use crate::{parse, WritingChar};
+    use crate::{parse, ParseResult, WritingChar};
 
     fn tr(v: &[(&str, &str)]) -> Vec<(String, String)> {
         return v
@@ -19,7 +19,7 @@ mod tests {
         let res = parse::parse_hiragana_with_buf("じねんじょをたべるぞ", "zinennjix").unwrap();
         assert_eq!(
             res,
-            (
+            ParseResult::Writing(
                 tr(&[("じ", "zi"), ("ね", "ne"), ("ん", "nn"), ("じ", "ji")]),
                 WritingChar::new("ょ", "xyo", "x"),
                 tr(&[
@@ -36,6 +36,27 @@ mod tests {
     #[test]
     fn test_parse_hiragana_with_buf_error() {
         let res = parse::parse_hiragana_with_buf("じねんじょをたべるぞ", "zinennjixs");
-        assert_eq!(res, None,);
+        assert_eq!(res, None);
+    }
+
+    #[test]
+    fn test_parse_hiragana_with_buf_done() {
+        let res =
+            parse::parse_hiragana_with_buf("じねんじょをたべるぞ", "jinennjyowotaberuzo").unwrap();
+
+        assert_eq!(
+            res,
+            ParseResult::Completed(tr(&[
+                ("じ", "ji"),
+                ("ね", "ne"),
+                ("ん", "nn"),
+                ("じょ", "jyo"),
+                ("を", "wo"),
+                ("た", "ta"),
+                ("べ", "be"),
+                ("る", "ru"),
+                ("ぞ", "zo")
+            ]))
+        )
     }
 }
