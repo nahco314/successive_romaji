@@ -3,9 +3,9 @@ use std::fmt::Debug;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct WritingChar {
-    hiragana: String,
-    romaji: String,
-    cur_buf_string: String,
+    pub hiragana: String,
+    pub romaji: String,
+    pub cur_buf_string: String,
 }
 
 impl WritingChar {
