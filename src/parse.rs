@@ -1,4 +1,4 @@
-use crate::romaji::{BASIC_ROMAJI_CHARS, ROMAJI_BLOCKS};
+use crate::romaji::BASIC_ROMAJI_CHARS;
 use std::fmt::Debug;
 
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -53,7 +53,7 @@ pub fn try_read<'a, 'b>(
         ));
     }
 
-    if hiragana.starts_with('ん') && romaji.len() >= 1 && first_char.unwrap() == 'n' {
+    if hiragana.starts_with('ん') && romaji.len() >= 2 && first_char.unwrap() == 'n' {
         // if chars[1] is 'n', it will hit rule of "nn -> ん"
         // if chars[1] is vowel, it will hit rule of ん行 (for example, "na -> な")
         // so we don't need to check it here
@@ -84,7 +84,7 @@ fn find_non_sokuonn(hiragana: &str) -> char {
 }
 
 fn get_writing<'a>(hiragana: &'a str, rest: &str) -> Option<(&'a str, WritingChar)> {
-    for (h, r) in ROMAJI_BLOCKS {
+    for (h, r) in BASIC_ROMAJI_CHARS {
         if hiragana.starts_with(h) && r.starts_with(rest) {
             return Some((
                 &hiragana[h.len()..],
@@ -101,7 +101,7 @@ fn get_writing<'a>(hiragana: &'a str, rest: &str) -> Option<(&'a str, WritingCha
         let first_char = rest;
         let non_sokuonn = find_non_sokuonn(hiragana);
 
-        for (h, r) in ROMAJI_BLOCKS {
+        for (h, r) in BASIC_ROMAJI_CHARS {
             if non_sokuonn.to_string() == h && r.starts_with(rest) {
                 return Some((
                     &hiragana[3..],
@@ -128,6 +128,27 @@ fn get_basic_rule_of_char(c: char) -> String {
     panic!("invalid romaji: {}", c)
 }
 
+fn parse_one_check_one_n(hiragana: &str) -> Option<(&str, (String, String))> {
+    if hiragana.starts_with('ん') && hiragana.chars().count() >= 2 {
+        let second_char = hiragana.chars().nth(1).unwrap();
+
+        let mut ok = true;
+
+        for c in "あいうえおん".chars() {
+            if c == second_char {
+                ok = false;
+                break;
+            }
+        }
+
+        if ok {
+            return Some((&hiragana[3..], ("ん".to_string(), "n".to_string())));
+        }
+    }
+
+    None
+}
+
 fn try_parse_one(hiragana: &str) -> Option<(&str, (String, String))> {
     if hiragana.starts_with('っ') && hiragana.chars().count() > 1 {
         let non_sokuonn = find_non_sokuonn(hiragana);
@@ -138,7 +159,20 @@ fn try_parse_one(hiragana: &str) -> Option<(&str, (String, String))> {
         ));
     }
 
-    for (h, r) in ROMAJI_BLOCKS {
+    if let Some(val) = parse_one_check_one_n(hiragana) {
+        return Some(val);
+    }
+
+    if hiragana.starts_with('ん') && hiragana.chars().count() > 2 {
+        let non_sokuonn = find_non_sokuonn(hiragana);
+        let first_char = get_basic_rule_of_char(non_sokuonn);
+        return Some((
+            &hiragana[3..],
+            ('っ'.to_string(), first_char[..1].to_string()),
+        ));
+    }
+
+    for (h, r) in BASIC_ROMAJI_CHARS {
         if hiragana.starts_with(h) {
             return Some((&hiragana[h.len()..], (h.to_string(), r.to_string())));
         }

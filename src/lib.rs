@@ -16,13 +16,32 @@ mod tests {
 
     #[test]
     fn test_parse_hiragana_with_buf() {
-        let res = parse::parse_hiragana_with_buf("じねんじょをたべるぞ", "zinennjix").unwrap();
+        let res = parse::parse_hiragana_with_buf("じねんじょをたべるぞ", "jinennjix").unwrap();
         assert_eq!(
             res,
             ParseResult::Writing(
-                tr(&[("じ", "zi"), ("ね", "ne"), ("ん", "nn"), ("じ", "ji")]),
+                tr(&[("じ", "ji"), ("ね", "ne"), ("ん", "nn"), ("じ", "ji")]),
                 WritingChar::new("ょ", "xyo", "x"),
                 tr(&[
+                    ("を", "wo"),
+                    ("た", "ta"),
+                    ("べ", "be"),
+                    ("る", "ru"),
+                    ("ぞ", "zo")
+                ]),
+            )
+        );
+    }
+    #[test]
+    fn test_parse_hiragana_with_buf_n() {
+        let res = parse::parse_hiragana_with_buf("じねんじょをたべるぞ", "jinen").unwrap();
+        assert_eq!(
+            res,
+            ParseResult::Writing(
+                tr(&[("じ", "ji"), ("ね", "ne")]),
+                WritingChar::new("ん", "nn", "n"),
+                tr(&[
+                    ("じょ", "jo"),
                     ("を", "wo"),
                     ("た", "ta"),
                     ("べ", "be"),
@@ -35,7 +54,7 @@ mod tests {
 
     #[test]
     fn test_parse_hiragana_with_buf_error() {
-        let res = parse::parse_hiragana_with_buf("じねんじょをたべるぞ", "zinennjixs");
+        let res = parse::parse_hiragana_with_buf("じねんじょをたべるぞ", "jinennjixs");
         assert_eq!(res, None);
     }
 
@@ -118,5 +137,12 @@ mod tests {
                 ("か", "ka")
             ]),)
         )
+    }
+
+    #[test]
+    fn test_parse_hiragana_n() {
+        let res = parse::parse_hiragana("あんき");
+
+        assert_eq!(res, Some(tr(&[("あ", "a"), ("ん", "n"), ("き", "ki")])))
     }
 }
