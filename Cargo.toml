@@ -1,6 +1,6 @@
 [package]
 name = "successive_romaji"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 
 [lib]
@@ -8,4 +8,7 @@ name = "successive_romaji"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = { version = "0.21.2", features = [] }
+pyo3 = { version = "0.21.2", optional = true }
+
+[features]
+default = ["pyo3"]

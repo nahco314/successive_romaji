@@ -1,9 +1,11 @@
 mod parse;
+#[cfg(feature = "pyo3")]
 #[cfg(not(test))]
 mod py_wrap;
 mod romaji;
 
 pub use parse::*;
+#[cfg(feature = "pyo3")]
 #[cfg(not(test))]
 pub use py_wrap::*;
 

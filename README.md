@@ -17,5 +17,5 @@ See https://pypi.org/project/successive-romaji/ .
 
 ```commandline
 docker run --rm -v $(pwd):/io ghcr.io/pyo3/maturin build --release -i python3.12 --sdist
-rye publish ./target/wheels/*
+rye publish ./target/wheels/*  --skip-existing
 ```
