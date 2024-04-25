@@ -1,7 +1,9 @@
 mod parse;
+mod py_wrap;
 mod romaji;
 
 pub use parse::*;
+pub use py_wrap::*;
 
 #[cfg(test)]
 mod tests {

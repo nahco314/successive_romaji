@@ -1,0 +1,6 @@
+[target.x86_64-unknown-linux-gnu]
+rustflags = ["-C", "link-arg=-L/home/nahco314/.rye/py/cpython@3.12.1/install/lib/"]
+
+
+[env]
+VIRTUAL_ENV="/home/nahco314/PycharmProjects/py_successive_romaji/.venv/"
