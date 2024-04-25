@@ -5,7 +5,7 @@ edition = "2021"
 
 [lib]
 name = "successive_romaji"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "lib"]
 
 [dependencies]
 pyo3 = { version = "0.21.2", optional = true }
