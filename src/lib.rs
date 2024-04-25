@@ -165,4 +165,32 @@ mod tests {
 
         assert_eq!(res, Some(tr(&[("ちょ", "tyo")])))
     }
+
+    #[test]
+    fn test_writing_sokuon() {
+        let res = parse::parse_hiragana_with_buf("ぺっと", "pe");
+
+        assert_eq!(
+            res,
+            Some(ParseResult::Writing(
+                tr(&[("ぺ", "pe")]),
+                WritingChar::new("っ", "t", ""),
+                tr(&[("と", "to")]),
+            ))
+        )
+    }
+
+    #[test]
+    fn test_writing_n() {
+        let res = parse::parse_hiragana_with_buf("かんか", "ka");
+
+        assert_eq!(
+            res,
+            Some(ParseResult::Writing(
+                tr(&[("か", "ka")]),
+                WritingChar::new("ん", "n", ""),
+                tr(&[("か", "ka")]),
+            ))
+        )
+    }
 }

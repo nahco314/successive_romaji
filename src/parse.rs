@@ -84,6 +84,28 @@ fn find_non_sokuonn(hiragana: &str) -> char {
 }
 
 fn get_writing<'a>(hiragana: &'a str, rest: &str) -> Option<(&'a str, WritingChar)> {
+    if rest.len() == 0 && hiragana.starts_with("っ") {
+        let non_sokuonn = find_non_sokuonn(hiragana);
+        return Some((
+            &hiragana[3..],
+            WritingChar {
+                hiragana: 'っ'.to_string(),
+                romaji: get_basic_rule_of_char(non_sokuonn)
+                    .chars()
+                    .next()
+                    .unwrap()
+                    .to_string(),
+                cur_buf_string: "".to_string(),
+            },
+        ));
+    }
+
+    if rest.len() == 0 {
+        if let Some(v) = parse_one_check_one_n(hiragana) {
+            return Some((v.0, WritingChar::new(&v.1 .0, &v.1 .1, "")));
+        }
+    }
+
     for (h, r) in BASIC_ROMAJI_CHARS {
         if hiragana.starts_with(h) && r.starts_with(rest) {
             return Some((
