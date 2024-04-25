@@ -8,4 +8,4 @@ name = "successive_romaji"
 crate-type = ["cdylib"]
 
 [dependencies]
-pyo3 = "0.21.2"
+pyo3 = { version = "0.21.2", features = [] }

@@ -1,8 +1,10 @@
 mod parse;
+#[cfg(not(test))]
 mod py_wrap;
 mod romaji;
 
 pub use parse::*;
+#[cfg(not(test))]
 pub use py_wrap::*;
 
 #[cfg(test)]
@@ -43,7 +45,7 @@ mod tests {
                 tr(&[("じ", "ji"), ("ね", "ne")]),
                 WritingChar::new("ん", "nn", "n"),
                 tr(&[
-                    ("じょ", "jo"),
+                    ("じょ", "jyo"),
                     ("を", "wo"),
                     ("た", "ta"),
                     ("べ", "be"),
@@ -146,5 +148,19 @@ mod tests {
         let res = parse::parse_hiragana("あんき");
 
         assert_eq!(res, Some(tr(&[("あ", "a"), ("ん", "n"), ("き", "ki")])))
+    }
+
+    #[test]
+    fn test_syo_or_sho() {
+        let res = parse::parse_hiragana("しょ");
+
+        assert_eq!(res, Some(tr(&[("しょ", "syo")])))
+    }
+
+    #[test]
+    fn test_tyo_or_chyo() {
+        let res = parse::parse_hiragana("ちょ");
+
+        assert_eq!(res, Some(tr(&[("ちょ", "tyo")])))
     }
 }

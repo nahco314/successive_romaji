@@ -1,8 +1,6 @@
 use crate::romaji::BASIC_ROMAJI_CHARS;
-use pyo3::pyclass;
 use std::fmt::Debug;
 
-#[pyclass]
 #[derive(Debug, Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
 pub struct WritingChar {
     pub hiragana: String,
