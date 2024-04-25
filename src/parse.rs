@@ -106,6 +106,12 @@ fn get_writing<'a>(hiragana: &'a str, rest: &str) -> Option<(&'a str, WritingCha
         }
     }
 
+    if rest == "n" {
+        if let Some(v) = parse_one_check_one_n(hiragana) {
+            return Some((v.0, WritingChar::new(&v.1 .0, &v.1 .1, "n")));
+        }
+    }
+
     for (h, r) in BASIC_ROMAJI_CHARS {
         if hiragana.starts_with(h) && r.starts_with(rest) {
             return Some((

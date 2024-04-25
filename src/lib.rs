@@ -45,7 +45,7 @@ mod tests {
             res,
             ParseResult::Writing(
                 tr(&[("じ", "ji"), ("ね", "ne")]),
-                WritingChar::new("ん", "nn", "n"),
+                WritingChar::new("ん", "n", "n"),
                 tr(&[
                     ("じょ", "jyo"),
                     ("を", "wo"),
