@@ -11,4 +11,4 @@ crate-type = ["cdylib"]
 pyo3 = { version = "0.21.2", optional = true }
 
 [features]
-default = ["pyo3"]
+default = []
