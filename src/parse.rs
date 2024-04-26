@@ -159,11 +159,13 @@ fn get_basic_rule_of_char(c: char) -> String {
 fn parse_one_check_one_n(hiragana: &str) -> Option<(&str, (String, String))> {
     if hiragana.starts_with('ん') && hiragana.chars().count() >= 2 {
         let second_char = hiragana.chars().nth(1).unwrap();
+        let second_romaji = get_basic_rule_of_char(second_char);
+        let second_romaji_first = second_romaji.chars().next().unwrap();
 
         let mut ok = true;
 
-        for c in "あいうえおん".chars() {
-            if c == second_char {
+        for c in "aiueon".chars() {
+            if c == second_romaji_first {
                 ok = false;
                 break;
             }
@@ -189,15 +191,6 @@ fn try_parse_one(hiragana: &str) -> Option<(&str, (String, String))> {
 
     if let Some(val) = parse_one_check_one_n(hiragana) {
         return Some(val);
-    }
-
-    if hiragana.starts_with('ん') && hiragana.chars().count() > 2 {
-        let non_sokuonn = find_non_sokuonn(hiragana);
-        let first_char = get_basic_rule_of_char(non_sokuonn);
-        return Some((
-            &hiragana[3..],
-            ('っ'.to_string(), first_char[..1].to_string()),
-        ));
     }
 
     for (h, r) in BASIC_ROMAJI_CHARS {

@@ -193,4 +193,14 @@ mod tests {
             ))
         )
     }
+
+    #[test]
+    fn test_parse_n() {
+        let res = parse::parse_hiragana("あんにん");
+
+        assert_eq!(
+            res,
+            Some(tr(&[("あ", "a"), ("ん", "nn"), ("に", "ni"), ("ん", "nn")]))
+        )
+    }
 }
