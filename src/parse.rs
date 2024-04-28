@@ -164,7 +164,7 @@ fn parse_one_check_one_n(hiragana: &str) -> Option<(&str, (String, String))> {
 
         let mut ok = true;
 
-        for c in "aiueon".chars() {
+        for c in "aiueony".chars() {
             if c == second_romaji_first {
                 ok = false;
                 break;
