@@ -1,4 +1,4 @@
-pub const BASIC_ROMAJI_CHARS: [(&str, &str); 188] = [
+pub const BASIC_ROMAJI_CHARS: [(&str, &str); 191] = [
     ("ふぁ", "fa"),
     ("ふぃ", "fi"),
     ("ふぇ", "fe"),
