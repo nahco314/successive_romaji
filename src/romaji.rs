@@ -1,4 +1,8 @@
 pub const BASIC_ROMAJI_CHARS: [(&str, &str); 188] = [
+    ("ふぁ", "fa"),
+    ("ふぃ", "fi"),
+    ("ふぇ", "fe"),
+    ("ふぉ", "fo"),
     ("ちゃ", "tya"),
     ("ちぃ", "tyi"),
     ("ちゅ", "tyu"),
